@@ -3,12 +3,13 @@ title: "Piantoni"
 author: "Gabriele Piantoni"
 format: pdf
 ---
+
 ```{r}
 library(here)
 here(i_am("eval-grades.Rproj"))
 ```
 
-
+#Question 1
 ```{r}
 library(vroom)
 grades<-vroom(here("data", "grades-2.csv"))
@@ -18,43 +19,37 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 ```
+
+#Question 2
 ```{r}
 n<-grades|>summarise(N=n())
 text<-paste("The data set contains", n, "grades")
 print(text)
 ```
-
+#Question 3
 ```{r}
 n_stu<-grades|>distinct(id)|>summarise(n())
 text1<-paste("The data set contains", n_stu, "students")
 print(text1)
 ```
+#Question 4
 ```{r}
 students<-grades|>select(id, group)|>distinct(id,group)
 students|>slice_sample(n=10)
 ```
-```{r}
-class(students$group)
-
-```
-```{r}
-class(students$group)
-```
+#Question 5
 
 ```{r}
 students|>ggplot(aes(group))+
   geom_bar()
 ```
+#Question 6
 ```{r}
 grades|>filter(course=="Astroengineering and Planetary Colonization")|>group_by(group)|>mutate("mean"=mean(grade))|>
   ggplot(aes(x=group, y=mean))+
            geom_col()
 ```
-###review this one
-```{r}
-grades<-grades|>mutate(semester=factor(semester, ordered=TRUE, levels=1:2))
-```
-
+#Question 7
 ```{r}
 grades|>filter(course=="Astroengineering and Planetary Colonization")|>group_by(group)|>mutate("mean"=mean(grade))|>
   ggplot(aes(x=group, y=mean))+
@@ -62,24 +57,22 @@ grades|>filter(course=="Astroengineering and Planetary Colonization")|>group_by(
   facet_wrap(vars(semester))
 ```
 #Attendance Analysis
+#Question 8
 ```{r}
 grades|>group_by(id, group,)|>reframe(n())|>slice_sample(n=10)
 grades|>group_by(id)|>reframe(mean(grade), max(grade), min(grade), median(grade))
 ```
-```{r}
-grades|>group_by(id)|>arrange(id)|>filter(course=="Interstellar Travel and Navigation")|>mutate(N=n())|>select(group, id, N)
-```
-
-
-#review
+#Question 9
 ```{r}
 grades1<-grades|>group_by(id, group)|>filter(course=="Interstellar Travel and Navigation")|>reframe(N=n())
+grades1
 ```
-
+#Question 10
 ```{r}
 grades1|> ggplot(aes(x=N))+
            geom_histogram(bins=5)
 ```
+#Question 11
 ```{r}
 grades1<-grades1|>mutate(group=factor(group, ordered=TRUE, levels=1:16))
 ```
