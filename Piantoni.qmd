@@ -45,5 +45,47 @@ class(students$group)
 students|>ggplot(aes(group))+
   geom_bar()
 ```
+```{r}
+grades|>filter(course=="Astroengineering and Planetary Colonization")|>group_by(group)|>mutate("mean"=mean(grade))|>
+  ggplot(aes(x=group, y=mean))+
+           geom_col()
+```
+###review this one
+```{r}
+grades<-grades|>mutate(semester=factor(semester, ordered=TRUE, levels=1:2))
+```
 
+```{r}
+grades|>filter(course=="Astroengineering and Planetary Colonization")|>group_by(group)|>mutate("mean"=mean(grade))|>
+  ggplot(aes(x=group, y=mean))+
+           geom_col()+
+  facet_wrap(vars(semester))
+```
+#Attendance Analysis
+```{r}
+grades|>group_by(id, group,)|>reframe(n())|>slice_sample(n=10)
+grades|>group_by(id)|>reframe(mean(grade), max(grade), min(grade), median(grade))
+```
+```{r}
+grades|>group_by(id)|>arrange(id)|>filter(course=="Interstellar Travel and Navigation")|>mutate(N=n())|>select(group, id, N)
+```
+
+
+#review
+```{r}
+grades1<-grades|>group_by(id, group)|>filter(course=="Interstellar Travel and Navigation")|>reframe(N=n())
+```
+
+```{r}
+grades1|> ggplot(aes(x=N))+
+           geom_histogram(bins=5)
+```
+```{r}
+grades1<-grades1|>mutate(group=factor(group, ordered=TRUE, levels=1:16))
+```
+
+```{r}
+grades1|> ggplot(aes(x=N, color=group))+
+           geom_density()
+```
 
