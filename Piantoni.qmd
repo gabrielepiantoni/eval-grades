@@ -1,0 +1,49 @@
+---
+title: "Piantoni"
+author: "Gabriele Piantoni"
+format: pdf
+---
+```{r}
+library(here)
+here(i_am("eval-grades.Rproj"))
+```
+
+
+```{r}
+library(vroom)
+grades<-vroom(here("data", "grades-2.csv"))
+```
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+```{r}
+n<-grades|>summarise(N=n())
+text<-paste("The data set contains", n, "grades")
+print(text)
+```
+
+```{r}
+n_stu<-grades|>distinct(id)|>summarise(n())
+text1<-paste("The data set contains", n_stu, "students")
+print(text1)
+```
+```{r}
+students<-grades|>select(id, group)|>distinct(id,group)
+students|>slice_sample(n=10)
+```
+```{r}
+class(students$group)
+
+```
+```{r}
+class(students$group)
+```
+
+```{r}
+students|>ggplot(aes(group))+
+  geom_bar()
+```
+
+
