@@ -81,4 +81,28 @@ grades1<-grades1|>mutate(group=factor(group, ordered=TRUE, levels=1:16))
 grades1|> ggplot(aes(x=N, color=group))+
            geom_density()
 ```
+#Question 12
+#miss group
+```{r}
+grades2<-grades|>group_by(id, course, group)|>reframe(M=mean(grade))
+```
+
+```{r}
+grades3<-grades2|>pivot_wider(id_cols=id, names_from=c(course), values_from=M)
+grades3|>slice_sample(n=10)
+```
+#Question 13
+```{r}
+grades3|>ggplot(aes(`Energy Harvesting and Sustainability`,`Virtual Reality and Simulated Environments`))+
+                  geom_point()+
+  geom_smooth(method="lm")
+```
+#Question 14
+```{r}
+grades3|>summarise(cor(`Cybernetics and Human Augmentation`, `Xenobiology and Extraterrestrial Life`))
+```
+#Question 15
+```{r}
+grades3|>group_by(group)|>(cor(`Cybernetics and Human Augmentation`, `Xenobiology and Extraterrestrial Life`))
+```
 
